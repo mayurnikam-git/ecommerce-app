@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/../static/utility.js"></script>
+    <script src="/../static/constant.js"></script>
+    <script src="/../static/cart_details.js"></script>
+</head>
+<body>
+<div th:if="${cartDetails.responseCode} == '000'">
+    <table >
+        <thead><th>Name</th></thead>
+        <tbody >
+        <tr th:each="cartDetail: ${cartDetails.cartDetails}">
+            <td th:text="${cartDetail.productId}"/>
+            <td ><a th:href="@{'/'+${cartDetail.productId}}">
+                <span th:text="${cartDetail.productName}" /></a></td>
+            <td><input name="product-quantity" th:value="${cartDetail.quantity}" /></td>
+            <td><input class="remove-from-cart" type = "button" value="remove" /></td>
+        </tr>
+        </tbody>
+    </table>
+
+
+    <a href="/buy">buy product</a> </br>
+
+    Response : <p id="response-msg"></p>
+</div>
+<span th:unless="${cartDetails.responseCode} == '000'" th:text="${cartDetails.responseDescription}" />
+
+</body>
+</html>

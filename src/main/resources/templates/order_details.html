@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:if="${buyOrderResponse.responseCode} == '000'">
+    <table border="1">
+        <thead>
+        <th>Name</th>
+        <th>Quantity</th>
+        <th>Price</th>
+        <th>Sum</th>
+        </thead>
+        <tbody >
+        <tr th:each="orderDetail: ${buyOrderResponse.buyOrderDetailList}">
+            <!--<td name="product-id" th:text="${orderDetail.productId}" />-->
+            <td name="product-name" th:text="${orderDetail.productName}" />
+            <td name="product-quantity" th:text="${orderDetail.quantity}" />
+            <td name="product-price" th:text="${orderDetail.price}" />
+            <td name="sum" th:text="${orderDetail.sum}" />
+        </tr>
+        </tbody>
+    </table>
+
+    Total : <span th:text="${buyOrderResponse.total}"/>
+</div>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        function sendRequest(url, request) {
+            var csrfTokenHeader = $("#csrf-token").attr("name");
+            var csrfTokenValue = $("#csrf-token").val();
+            console.log("token", csrfTokenHeader,csrfTokenValue);
+            $.ajax(
+                {
+                    url: url,
+                    type: "POST",
+                    beforeSend: function(request) {
+                        request.setRequestHeader(csrfTokenHeader, csrfTokenValue);
+                    },               async : false,
+                    data: request,
+                    contentType: "application/json",
+                    success : function (response){
+                        console.log("success : " ,response);
+                    },
+                    error : function (response){
+                        console.log("error : " , response);
+                    },
+                    complete: function (response){
+                        console.log("complete : ", response);
+                    }
+                })
+        }
+
+        /*    $(document).ready(function() {
+                $('form').on('submit', function(e){
+                        e.preventDefault();
+
+                });
+            });
+    */
+        function addProduct() {
+            var requestObj = {};
+            var productName = $("input[name='productName']").val();
+            var productPrice = $("input[name='productPrice']").val();
+
+            requestObj.productName = productName;
+            requestObj.productPrice=productPrice;
+            var requestJson = createJson(requestObj);
+            sendRequest("/test2",requestJson);
+        }
+
+        function createJson(requestArray){
+            return JSON.stringify(requestArray);
+        }
+    </script>
+</head>
+<body>
+
+<div >
+    Product Name : <input type="text" name="productName"/></br>
+    Product Price : <input type="text" name="productPrice"/></br>
+    <input id="csrf-token" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+    <input type="button" onclick="addProduct()"/>
+</div>
+
+</body>
+</html>

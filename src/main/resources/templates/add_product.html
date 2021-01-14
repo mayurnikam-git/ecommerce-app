@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/../static/utility.js"></script>
+    <script src="/../static/constant.js"></script>
+    <script src="/../static/add_product.js"></script>
+</head>
+<br>
+<div>
+    Product Name : <input type="text" name="productName"/></br>
+    Product Price : <input type="text" name="productPrice"/></br>
+    <!--<input id = "csrf-token" type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>-->
+    <input type="button" value="submit" onclick="addProduct()" />
+</div>
+</br></br></br>
+
+Response : <p id="response-msg"></p>
+</body>
+</html>

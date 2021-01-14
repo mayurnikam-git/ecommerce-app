@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/../static/utility.js"></script>
+    <script src="/../static/constant.js"></script>
+    <!--<script src="/../static/constant.js"></script>
+    <script src="/../static/add_product.js"></script>
+    --><script>
+        function getProduct(){
+            var selectedProduct = getSelectValue("product-list");
+            var request = {};
+            //request.productId=$("option[value="+selectedProduct+"]").val();
+            request.productId=$(selectedProduct).val();
+
+            var jsonRequest = createJson(request);
+            var ajaxResponse = sendRequest("/detail/"+request.productId,"GET", null);
+            populateProductDetailsToEdit(ajaxResponse);
+        }
+
+        function populateProductDetailsToEdit(response){
+            $("input[name=productName]").val(response.productName);
+            $("input[name=productPrice]").val(response.productPrice);
+            $("input[name=productId]").val(response.productId);
+            unhideElement("#edit-prodcut-div");
+        }
+
+        function editProduct(){
+            var requestObj = {};
+            var productName = $("input[name='productName']").val();
+            var productPrice = $("input[name='productPrice']").val();
+            var productId = $("input[name='productId']").val();
+
+            requestObj.productName = productName;
+            requestObj.productPrice=productPrice;
+            requestObj.productId=productId;
+            var requestJson = createJson(requestObj);
+            var ajaxRespone = sendRequest("/products","PUT", requestJson);
+            populate(ajaxRespone);
+        }
+
+        function populate(response){
+            if(response.responseCode == "000"){
+                setResponseMessage("#response-msg", PRODUCT_EDITED_SUCCESSFULLY);
+            }else {
+                setResponseMessage("#response-msg", response.responseDescription);
+            }
+        }
+
+    </script>
+</head>
+<body>
+<h1>Select product to EDIT</h1>
+
+<select id="product-list">
+    <option >Please select...</option>
+    <option th:each="product : ${products.productDetailList}" th:value="${product.productId}" th:text="${product.productName}">
+    </option>
+</select>
+
+<input type="button" value="get product" onclick="getProduct()">
+
+
+<!--
+NOTE :
+move this form to a new file which can be included in all pages-->
+<div id="edit-prodcut-div" hidden>
+    Product Name : <input type="text" name="productName" /></br>
+    Product Price : <input type="text" name="productPrice" /></br>
+    <input type="hidden" name="productId"  /></br>
+    <input type="button" value="submit" onclick="editProduct()"/>
+</div>
+
+
+<!--Response display section-->
+<!--<div th:if="${cartDetails.responseCode} == '000'">-->
+    Response : <p id="response-msg"></p>
+<!--
+</div>
+<span th:unless="${cartDetails.responseCode} == '000'" th:text="${cartDetails.responseDescription}" />
+-->
+
+
+</body>
+</html>

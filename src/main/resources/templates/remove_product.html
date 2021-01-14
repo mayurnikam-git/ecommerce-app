@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/../static/utility.js"></script>
+    <script src="/../static/constant.js"></script>
+    <script>
+        function removeProduct(){
+            var selectedProduct = getSelectValue("product-list");
+            var request = {};
+            //request.productId=$("option[value="+selectedProduct+"]").val();
+            request.productId=$(selectedProduct).val();
+
+            var jsonRequest = createJson(request);
+            var ajaxResponse = sendRequest("/products/"+request.productId,"DELETE", null);
+            populate(ajaxResponse);
+        }
+
+        function populate(response){
+            if(response.responseCode == "000"){
+                setResponseMessage("#response-msg", PRODUCT_REMOVED_SUCCESSFULLY);
+            }else {
+                setResponseMessage("#response-msg", response.responseDescription);
+            }
+        }
+    </script>
+</head>
+<body>
+<h1>Select product to remove</h1>
+
+<select id="product-list">
+    <option >Please select...</option>
+    <option th:each="product : ${products.productDetailList}" th:value="${product.productId}" th:text="${product.productName}">
+    </option>
+</select>
+
+<input type="button" value="remove product" onclick="removeProduct()">
+Response : <p id="response-msg"></p>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/../static/utility.js"></script>
+    <script src="/../static/constant.js"></script>
+    <script src="/../static/view_product_details.js"></script>
+
+</head>
+<body>
+<h1>Product Details</h1>
+<div th:if="${product.responseCode} == '000'">
+    <label th:text="${product.inStockQuantity}  ? 'IN-STOCK' : 'OUT OF STOCK'"></label>
+<table border="1">
+    <thead><th>id</th><th>Name</th><th>price</th></thead>
+    <tbody >
+    <tr>
+        <td name="productId" th:text="${product.productId}" />
+        <td name="productName" th:text="${product.productName}" />
+        <td name="productPrice" th:text="${product.productPrice}" />
+    </tr>
+    </tbody>
+</table>
+   <!-- quantity : <input type="text" name="quantity" />-->
+    <input th:disabled="${product.inStockQuantity <=0}" type="button" value="Add to cart" onclick="addProductToCart()" />
+</div>
+        <span th:unless="${product.responseCode} == '000'" th:text="${product.responseDescription}" />
+
+Response : <p id="response-msg"></p>
+</body>
+</html>

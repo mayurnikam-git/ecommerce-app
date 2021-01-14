@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="/../static/utility.js"></script>
+    <script>
+        function addProductToCart() {
+            var requestObj = {};
+            var productId = $(this).text();
+            var productName = $(this).text();
+
+            requestObj.productName = productName;
+            requestObj.productPrice=productPrice;
+            var requestJson = createJson(requestObj);
+            sendRequest("/product/add",requestJson);
+        }
+    </script>
+</head>
+<body>
+<a href="/cart">view cart</a>
+<h1>Product list</h1>
+<div th:if="${products.responseCode} == '000'">
+    <table border="1">
+        <thead><th>Name</th></thead>
+        <tbody >
+        <tr th:each="product: ${products.productDetailList}">
+            <td><a th:href="@{'/'+${product.productId}}"><span th:text="${product.productName}" /></a></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<span th:unless="${products.responseCode} == '000'" th:text="${products.responseDescription}" />
+
+</table>
+</body>
+</html>
